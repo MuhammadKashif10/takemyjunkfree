@@ -6,7 +6,9 @@ import type { Metadata } from "next";
  * into metadata or JSON-LD (the old TanStack app's lib/seo.ts used
  * relative canonical paths; this is the fix).
  */
-export const SITE_URL = (process.env["NEXT_PUBLIC_SITE_URL"] ?? "http://localhost:3000").replace(/\/+$/, "");
+// `||` (not `??`) deliberately — an env var present but set to an empty
+// string must also fall back, or new URL(SITE_URL) throws downstream.
+export const SITE_URL = (process.env["NEXT_PUBLIC_SITE_URL"] || "http://localhost:3000").replace(/\/+$/, "");
 
 export function absoluteUrl(path: string): string {
   const normalized = path.startsWith("/") ? path : `/${path}`;
