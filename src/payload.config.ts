@@ -55,6 +55,10 @@ export default buildConfig({
     pool: {
       connectionString: process.env["DATABASE_URI"] ?? "",
     },
+    // Schema push/pull (dev convenience) runs on every cold start otherwise,
+    // adding latency + extra DB round-trips on serverless. The schema is
+    // already in place from local dev, so production just connects.
+    push: process.env["NODE_ENV"] !== "production",
   }),
   plugins: [
     // Falls back to local filesystem storage automatically when
